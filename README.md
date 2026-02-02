@@ -1,135 +1,95 @@
-🎓 LMS Microservices Backend
+# 🎓 LMS Microservices Backend
 
-A Learning Management System (LMS) backend built using Java Spring Boot, Kafka, and Microservices architecture.
-This system handles course enrollment, event-driven communication, and automatic certificate generation.
+A Learning Management System (LMS) backend built using Java Spring Boot, Apache Kafka, and Microservices architecture. This project demonstrates real-world event-driven communication between services.
 
-🚀 Tech Stack
+## 🚀 Tech Stack
+- Java 17  
+- Spring Boot  
+- Spring Data JPA (Hibernate)  
+- Apache Kafka  
+- MySQL  
+- REST APIs  
+- Maven  
+- WSL (for Kafka setup)
 
-Java 17
+## 🧩 Microservices Overview
+| Service | Description |
+|--------|-------------|
+| Enrollment Service | Handles user course enrollment |
+| Certificate Service | Generates course completion certificates |
+| Common Module | Shared Kafka event classes |
+| Kafka | Message broker for async communication |
 
-Spring Boot
+## 🔁 Kafka Event Flow
+1. User enrolls in a course  
+2. Enrollment Service publishes `CourseEnrolledEvent`  
+3. Kafka topic `course-enrolled` receives the event  
+4. Certificate Service consumes the event  
+5. Certificate PDF is generated  
+6. Certificate details are saved in database  
 
-Spring Data JPA (Hibernate)
+## 📦 Kafka Event Structure
+CourseEnrolledEvent  
+- userId  
+- courseId  
+- enrollmentDate  
 
-Apache Kafka
+## 🗂️ Project Structure
+lms-backend/  
+├── enrollment-service/  
+├── certificate-service/  
+├── common/  
+│   └── CourseEnrolledEvent.java  
+├── pom.xml  
+└── README.md  
 
-MySQL
+## ⚙️ How to Run the Project
+1. Start Zookeeper  
+zookeeper-server-start.bat config/zookeeper.properties  
 
-REST APIs
+2. Start Kafka  
+kafka-server-start.bat config/server.properties  
 
-WSL / Docker
+3. Create Kafka Topic  
+kafka-topics.bat --create --topic course-enrolled --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1  
 
-Maven
+4. Run each microservice  
+mvn spring-boot:run  
 
-🧩 Microservices Overview
-Service	Description
-Enrollment Service	Handles course enrollment
-Certificate Service	Generates certificates after enrollment
-Common Module	Shared event DTOs
-Kafka	Event-driven communication
-🔁 Event Flow (Kafka)
+## 📄 Certificate Storage
+Certificates are generated as PDF files and stored in the `certificates/` folder.  
+The folder is automatically created if it does not exist.
 
-User enrolls in a course
+## 🧪 Testing
+- APIs tested using Postman  
+- Kafka events verified using logs  
+- Database verified using MySQL  
 
-Enrollment Service publishes CourseEnrolledEvent
+## 🔐 .gitignore
+/target  
+/.idea  
+/.vscode  
+*.log  
+*.pdf  
+certificates/  
 
-Kafka topic: course-enrolled
+## 🌟 Key Features
+- Event-driven microservices using Kafka  
+- Clean and scalable architecture  
+- Real-world LMS workflow  
+- Interview-ready backend project  
 
-Certificate Service consumes the event
+## 📌 Future Enhancements
+- Authentication & Authorization  
+- Email notifications  
+- Cloud storage for certificates  
+- Docker & Kubernetes  
+- Frontend integration  
 
-Certificate PDF is generated and stored
+## 👨‍💻 Author
+Gauhar  
+Backend Developer  
+Java | Spring Boot | Kafka | Microservices | Angular
 
-Certificate metadata is saved in database
-
-📦 Kafka Event Example
-CourseEnrolledEvent {
-    userId,
-    courseId,
-    enrollmentDate
-}
-
-🗂️ Project Structure
-lms-backend/
-│
-├── enrollment-service/
-├── certificate-service/
-├── common/
-│   └── CourseEnrolledEvent.java
-├── pom.xml
-└── README.md
-
-⚙️ How to Run the Project
-1️⃣ Start Kafka & Zookeeper
-zookeeper-server-start.bat config/zookeeper.properties
-kafka-server-start.bat config/server.properties
-
-2️⃣ Create Kafka Topic
-kafka-topics.bat --create ^
---topic course-enrolled ^
---bootstrap-server localhost:9092 ^
---partitions 1 ^
---replication-factor 1
-
-3️⃣ Run Services
-mvn spring-boot:run
-
-
-Run each microservice separately.
-
-📄 Certificate Storage
-
-Certificates are generated as PDF files and stored inside:
-
-/certificates/
-
-
-Folder is auto-created by the service.
-
-🧪 Testing
-
-APIs tested using Postman
-
-Kafka events verified using logs
-
-Database verified via MySQL queries
-
-🔐 .gitignore (Important)
-/target
-/.idea
-/.vscode
-*.log
-*.pdf
-certificates/
-
-🌟 Key Features
-
-Event-driven architecture using Kafka
-
-Clean separation of microservices
-
-Scalable and loosely coupled design
-
-Real-world LMS workflow
-
-Production-ready folder structure
-
-📌 Future Enhancements
-
-Authentication & Authorization
-
-Email notifications
-
-Cloud storage for certificates
-
-Docker & Kubernetes deployment
-
-Frontend integration (Angular / React)
-
-👨‍💻 Author
-
-Gauhar
-Backend Developer | Java | Spring Boot | Kafka
-
-⭐ Final Note
-
-This project demonstrates real-world microservices, Kafka usage, and clean backend design.
+## ⭐ Final Note
+This project showcases practical use of Spring Boot microservices with Kafka and is suitable for real-world applications.
