@@ -1,0 +1,99 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+
+      routes:
+
+        - id: course-service
+          uri: http://course-service:8081
+          predicates:
+            - Path=/courses/**
+
+        - id: enrollment-service
+          uri: http://enrollment-service:8082
+          predicates:
+            - Path=/enrollments/**
+
+        - id: progress-service
+          uri: http://progress-service:8083
+          predicates:
+            - Path=/progress/**
+
+        - id: certificate-service
+          uri: http://certificate-service:8084
+          predicates:
+            - Path=/certificates/**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#server:
+#  port: 8080   # Gateway port (Angular talks to this)
+#
+#spring:
+#  application:
+#    name: api-gateway
+#
+#  cloud:
+#    gateway:
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+#
+#      routes:
+#
+#        # COURSE SERVICE
+#        - id: course-service
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/courses/**
+#
+#        # ENROLLMENT SERVICE
+#        - id: enrollment-service
+#          uri: http://localhost:8082
+#          predicates:
+#            - Path=/enrollments/**
+#
+#        # PROGRESS SERVICE
+#        - id: progress-service
+#          uri: http://localhost:8083
+#          predicates:
+#            - Path=/progress/**
+#
+#        # CERTIFICATE SERVICE
+#        - id: certificate-service
+#          uri: http://localhost:8084
+#          predicates:
+#            - Path=/certificates/**
