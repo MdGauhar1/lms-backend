@@ -33,6 +33,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+
+		<dependency>
 			<groupId>com.lms</groupId>
 			<artifactId>common-lib</artifactId>
 			<version>1.0.0</version>
