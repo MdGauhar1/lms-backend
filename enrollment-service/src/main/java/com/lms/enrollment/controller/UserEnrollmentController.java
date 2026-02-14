@@ -6,36 +6,40 @@ import com.lms.enrollment.kafka.EnrollmentProducer;
 import com.lms.enrollment.repository.EnrollmentRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/enrollments")
-public class EnrollmentController {
+@RequestMapping("/user/enrollments")
+public class UserEnrollmentController {
 
     private final EnrollmentRepository repository;
     private final EnrollmentProducer producer;
 
-    public EnrollmentController(EnrollmentRepository repository,
-                                EnrollmentProducer producer) {
+    public UserEnrollmentController(
+            EnrollmentRepository repository,
+            EnrollmentProducer producer
+    ) {
         this.repository = repository;
         this.producer = producer;
     }
 
-    // POST /enrollments
-    @PostMapping
-    public Enrollment enroll(@RequestParam Long userId,
-                             @RequestParam Long courseId) {
+    // ✅ USER enrolls himself
+    @PostMapping("/{courseId}")
+    public Enrollment enroll(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable Long courseId
+    ) {
+        if (repository.existsByUserIdAndCourseId(userId, courseId)) {
+            throw new RuntimeException("Already enrolled");
+        }
 
         Enrollment enrollment = new Enrollment();
         enrollment.setUserId(userId);
         enrollment.setCourseId(courseId);
-        enrollment.setStatus("ENROLLED");
-        enrollment.setEnrolledAt(LocalDateTime.now());
 
         Enrollment saved = repository.save(enrollment);
 
-        // Send Kafka event
+        // ✅ Kafka event
         producer.sendEnrollmentEvent(
                 new CourseEnrolledEvent(userId, courseId)
         );
@@ -43,9 +47,11 @@ public class EnrollmentController {
         return saved;
     }
 
-    // GET /enrollments/user/{userId}
-    @GetMapping("/user/{userId}")
-    public List<Enrollment> getUserEnrollments(@PathVariable Long userId) {
+    // ✅ USER sees only his enrollments
+    @GetMapping
+    public List<Enrollment> myEnrollments(
+            @RequestHeader("X-USER-ID") Long userId
+    ) {
         return repository.findByUserId(userId);
     }
 }

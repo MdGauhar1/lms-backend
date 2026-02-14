@@ -98,6 +98,19 @@ public class CertificateConsumer {
     public void consume(CourseCompletedEvent event) {
 
         try {
+
+            // ✅ 1️⃣ Check if certificate already generated
+            boolean exists = repository.existsByUserIdAndCourseId(
+                    event.getUserId(),
+                    event.getCourseId()
+            );
+
+            if (exists) {
+                System.out.println("⚠ Certificate already exists. Skipping generation.");
+                return; // 🔥 STOP execution
+            }
+
+
             // 🔥 1️⃣ Ensure directory exists
             String baseDir = System.getProperty("user.dir") + File.separator + "certificates";
             File dir = new File(baseDir);

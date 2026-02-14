@@ -6,7 +6,7 @@ spring:
     name: progress-service
 
   datasource:
-    url: jdbc:mysql://mysql:3306/lms
+    url: jdbc:mysql://localhost:3306/lms?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: test
 

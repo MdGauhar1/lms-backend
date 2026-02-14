@@ -8,4 +8,7 @@ import java.util.List;
 public interface CertificateRepository extends JpaRepository<Certificate, Long> {
 
     List<Certificate> findByUserId(Long userId);
+
+    // ✅ Check if certificate already exists
+    boolean existsByUserIdAndCourseId(Long userId, Long courseId);
 }

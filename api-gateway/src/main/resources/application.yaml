@@ -5,12 +5,38 @@ spring:
   application:
     name: api-gateway
 
+#  security:
+#    user:
+#      name: admin
+#      password: tear@123
+#      roles: ADMIN
+
   cloud:
     gateway:
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        add-to-simple-url-handler-mapping: true   # ⭐ VERY IMPORTANT
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+
+
+
+
 
       routes:
+        - id: auth-service
+          uri: http://auth-service:8085
+          predicates:
+            - Path=/auth/**
 
         - id: course-service
           uri: http://course-service:8081
@@ -20,7 +46,7 @@ spring:
         - id: enrollment-service
           uri: http://enrollment-service:8082
           predicates:
-            - Path=/enrollments/**
+            - Path=/user/enrollments/**,/admin/enrollments/**
 
         - id: progress-service
           uri: http://progress-service:8083
@@ -31,30 +57,3 @@ spring:
           uri: http://certificate-service:8084
           predicates:
             - Path=/certificates/**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
