@@ -12,7 +12,7 @@ import java.security.Key;
 public class JwtUtil {
 
     private static final String SECRET_KEY =
-            "";
+            "key";
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
