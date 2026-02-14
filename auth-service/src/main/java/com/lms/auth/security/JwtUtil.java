@@ -14,7 +14,7 @@ import java.util.Date;
 public class JwtUtil {
 
     private static final String SECRET_KEY =
-            "rFfDGahhV4JfXQ26Wmtar1gD2Op//E9DMuhhHTsxq0alCZ1cZNiFX3tG/ltjizcLsX3reQrRDdxIjflBSJbavg==";
+            "key-here";
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
